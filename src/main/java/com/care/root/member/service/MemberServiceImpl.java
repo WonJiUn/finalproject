@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.care.root.member.dto.KakaoMemberDTO;
 import com.care.root.member.dto.MemberDTO;
 import com.care.root.mybatis.member.MemberMapper;
 
@@ -87,6 +88,33 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDTO getUserSessionId(String sessionId) {
 		
 		return mapper.getUserSessionId(sessionId);
+	}
+
+	@Override
+	public String KakaoLoginChk(String id, String email) {
+		//System.out.println("서비스 : " + id);
+		//System.out.println("서비스 : " + email);
+		
+		KakaoMemberDTO dto = mapper.KakaoLoginChk(id);
+		
+		if(dto != null) {
+			return dto.getEmail();
+		}else {
+			return "0";
+		}
+		
+	}
+
+	@Override
+	public int KakaoRegister(String id, String email) {
+		int result = 0;
+		try {
+			result = mapper.KakaoRegister(id, email);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

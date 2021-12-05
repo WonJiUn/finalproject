@@ -2,6 +2,7 @@ package com.care.root.member.controller;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -13,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.care.root.common.MemberSessionName;
@@ -138,4 +141,35 @@ public class MemberController implements MemberSessionName {
 		return "redirect:register_form";
 		//회원가입 실패
 	}
+	
+	@PostMapping(value="ajax_kakaoLogin", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String ajaxKakaoLogin(@RequestBody Map kakao_info, HttpSession session, HttpServletResponse response) {	
+		//System.out.println("아이디 : " + kakao_info.get("id"));
+		//System.out.println("이메일 : " + kakao_info.get("email"));
+		
+		String email = ms.KakaoLoginChk(kakao_info.get("id").toString(), kakao_info.get("email").toString());
+		
+
+		if(!email.equals("0")){
+			session.setAttribute(LOGIN, email);
+			System.out.println("로그인성공");
+			return email;
+		}
+		else {
+			int result = ms.KakaoRegister(kakao_info.get("id").toString(), kakao_info.get("email").toString());
+			if(result == 1) {
+				if(session.getAttribute( LOGIN ) == null) {
+					session.setAttribute(LOGIN, kakao_info.get("email").toString());
+				}
+				System.out.println("가입성공 : " + kakao_info.get("email").toString());
+				return kakao_info.get("email").toString();
+			}else {
+				System.out.println("문제발생");
+				return "login";
+			}
+		}
+		
+	}
+	
 }

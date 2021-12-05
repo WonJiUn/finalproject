@@ -87,6 +87,9 @@ nav ul li a:hover {
 					<li>
 						<a href="${contextPath }/board/FAQ">FAQ</a>
 					</li>
+					<li>
+						<a href="${contextPath }/map/KakaoMaps">지도</a>
+					</li>
 					<%--
 					<li>
 						<a href="${contextPath }/test/board">TEST_BOARD</a>

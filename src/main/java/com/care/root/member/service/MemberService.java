@@ -13,4 +13,6 @@ public interface MemberService {
 	public int register(MemberDTO dto);
 	public void keepLogin(String sessionId, Date limitDate, String id);//sql쪽 Date로 가져와야함
 	public MemberDTO getUserSessionId(String sessionId);
+	public String KakaoLoginChk(String id, String email);
+	public int KakaoRegister(String id, String email);
 }

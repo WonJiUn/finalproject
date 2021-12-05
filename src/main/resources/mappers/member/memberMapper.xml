@@ -10,24 +10,37 @@
 		<result property="limitTime" column="limit_time"/>
 		<result property="sessionId" column="session_id"/>
 	</resultMap>
+	
+	<resultMap id="kakaomember" type="com.care.root.member.dto.KakaoMemberDTO">
+		<id property="id" column="id"/>
+		<result property="email" column="email"/>
+	</resultMap>
 
 	<select id="userCheck" resultMap="member">
-		select * from membership where id=#{id}
+		select * from member where id=#{id}
 	</select>
 	
 	<select id="memberInfo" resultMap="member">
-		select * from membership
+		select * from member
 	</select>
 	
 	<insert id="register">
-		insert into membership(id, pw, addr) values(#{id}, #{pw}, #{addr})
+		insert into member(id, pw, addr) values(#{id}, #{pw}, #{addr})
 	</insert>
 	
 	<update id="keepLogin">
-		update membership set session_id=#{sessionId}, limit_time=#{limitDate} where id=#{id}
+		update member set session_id=#{sessionId}, limit_time=#{limitDate} where id=#{id}
 	</update>
 	
 	<select id="getUserSessionId" resultMap="member">
-		select * from membership where session_id = #{sessionId}
+		select * from member where session_id = #{sessionId}
 	</select>
+	
+	<select id="KakaoLoginChk" resultMap="kakaomember">
+		select * from kakaomember where id = #{id}
+	</select>
+	
+	<insert id="KakaoRegister" parameterType="map">
+		insert into kakaomember(id, email) values(#{id}, #{email})
+	</insert>
 </mapper>
