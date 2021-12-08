@@ -20,4 +20,5 @@ public interface MemberMapper {
 	//@Param 어노테이션 + xml 파일의 parameterType="map"은
 	//Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
 	//라는 오류가 발생하여 해결하기 위해 넣었음
+	public KakaoMemberDTO kakaoMemberInfo(String email);
 }

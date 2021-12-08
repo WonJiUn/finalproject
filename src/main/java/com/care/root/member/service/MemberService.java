@@ -15,4 +15,5 @@ public interface MemberService {
 	public MemberDTO getUserSessionId(String sessionId);
 	public String KakaoLoginChk(String id, String email);
 	public int KakaoRegister(String id, String email);
+	public int mypage(Model model, String kakaoSessionName, String sessionName);
 }

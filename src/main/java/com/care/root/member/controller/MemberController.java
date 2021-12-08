@@ -32,7 +32,7 @@ public class MemberController implements MemberSessionName {
 	
 	@GetMapping("/login")
 	public String login() {
-		System.out.println("멤버 로그인 연결");
+		//System.out.println("멤버 로그인 연결");
 		return "member/login";
 	}
 	
@@ -150,17 +150,18 @@ public class MemberController implements MemberSessionName {
 		
 		String email = ms.KakaoLoginChk(kakao_info.get("id").toString(), kakao_info.get("email").toString());
 		
-
 		if(!email.equals("0")){
 			session.setAttribute(LOGIN, email);
-			System.out.println("로그인성공");
+			session.setAttribute(KAKAOLOGIN, email);
+			System.out.println("세션명 : " +  session.getAttribute(KAKAOLOGIN));
+			System.out.println("카카오 로그인성공");
 			return email;
 		}
 		else {
 			int result = ms.KakaoRegister(kakao_info.get("id").toString(), kakao_info.get("email").toString());
 			if(result == 1) {
-				if(session.getAttribute( LOGIN ) == null) {
-					session.setAttribute(LOGIN, kakao_info.get("email").toString());
+				if(session.getAttribute( KAKAOLOGIN ) == null) {
+					session.setAttribute(KAKAOLOGIN, kakao_info.get("email").toString());
 				}
 				System.out.println("가입성공 : " + kakao_info.get("email").toString());
 				return kakao_info.get("email").toString();
@@ -170,6 +171,14 @@ public class MemberController implements MemberSessionName {
 			}
 		}
 		
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage(Model model, HttpSession session) {
+		//servlet-context.xml에 "/member/memberInfo" 와 동일한 인터셉터 설정되어있음
+		int result = ms.mypage(model, (String)session.getAttribute(KAKAOLOGIN), (String)session.getAttribute(LOGIN));
+		model.addAttribute("loginWay", result);
+		return "member/mypage";
 	}
 	
 }

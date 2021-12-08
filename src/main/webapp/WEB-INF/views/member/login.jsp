@@ -83,7 +83,8 @@ Kakao.init('6eaf5454c1d56a8e8e152088b0cfa32b');
       },
     })
   }
-//카카오 계정 -> 연결된 서비스관리 -> 연결해제(DB삭제기능 미구현이므로 다시 가입하려면 DB는 직접삭제해야함)  
+//카카오 계정 -> 연결된 서비스관리 -> 연결해제(DB삭제기능 미구현이므로 다시 가입하려면 DB는 직접삭제해야함)
+//다른계정으로 로그인기능 미구현. 인터넷 브라우저 설정에서 kakao.com 쿠키삭제하면 다른 아이디로 로그인가능 
 function kakaoLeave() {
       if (Kakao.Auth.getAccessToken()) {
         Kakao.API.request({

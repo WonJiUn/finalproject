@@ -90,12 +90,15 @@ nav ul li a:hover {
 					<li>
 						<a href="${contextPath }/map/KakaoMaps">지도</a>
 					</li>
-					<%--
+					
 					<li>
-						<a href="${contextPath }/test/board">TEST_BOARD</a>
-						<a href="${contextPath }/test/write">TEST_WRITE</a>
+						<c:choose>
+							<c:when test="${loginUser != null }">
+								<a href="${contextPath }/member/mypage">MYPAGE</a>
+							</c:when>
+						</c:choose>
 					</li>
-					--%>
+					
 					<li>
 						<c:choose>
 							<c:when test="${loginUser != null }">

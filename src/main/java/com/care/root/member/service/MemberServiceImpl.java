@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -115,6 +117,19 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	@Override
+	public int mypage(Model model, String kakaoSessionName, String sessionName) {
+		System.out.println("서비스 세션명 : " + kakaoSessionName);
+		if(kakaoSessionName == null) {
+			model.addAttribute("info", mapper.userCheck(sessionName));
+			return 0;
+		}
+		else {
+			model.addAttribute("info", mapper.kakaoMemberInfo(kakaoSessionName));
+			return 1;
+		}
 	}
 
 }
