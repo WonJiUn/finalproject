@@ -1,10 +1,13 @@
 package com.care.root.member.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -180,5 +183,46 @@ public class MemberController implements MemberSessionName {
 		model.addAttribute("loginWay", result);
 		return "member/mypage";
 	}
+	
+	@GetMapping("/modify")
+	public String modify(Model model, HttpSession session) {
+		int result = ms.mypage(model, (String)session.getAttribute(KAKAOLOGIN), (String)session.getAttribute(LOGIN));
+		model.addAttribute("loginWay", result);
+		
+		
+		return "member/modify";
+	}
+	
+	@PostMapping("/modify_save")
+	public void modify_save(HttpServletRequest request, HttpServletResponse response) {
+		//변경할 비밀번호 입력 안하면 실패처리되게 서비스에서 설정해둠
+		int result = ms.modify_save(request, response);
+
+		if(result == 1) {
+			PrintWriter out = null;
+			response.setContentType("text/html; charset=utf-8");
+			try {
+				out = response.getWriter();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			out.print("<script> alert('회원정보가 수정되었습니다');"
+					+ "location.href='mypage'; </script>");
+			
+		}else {
+			PrintWriter out = null;
+			response.setContentType("text/html; charset=utf-8");
+			try {
+				out = response.getWriter();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			out.print("<script> alert('수정실패');"
+					+ "location.href='modify'; </script>");
+			
+		}
+	}
+	
+	
 	
 }

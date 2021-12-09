@@ -21,4 +21,6 @@ public interface MemberMapper {
 	//Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
 	//라는 오류가 발생하여 해결하기 위해 넣었음
 	public KakaoMemberDTO kakaoMemberInfo(String email);
+	public int kakao_modify_save(KakaoMemberDTO dto);
+	public int modify_save(MemberDTO dto);
 }

@@ -1,9 +1,13 @@
 package com.care.root.member.service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int mypage(Model model, String kakaoSessionName, String sessionName) {
-		System.out.println("서비스 세션명 : " + kakaoSessionName);
+		//System.out.println("서비스 세션명 : " + kakaoSessionName);
 		if(kakaoSessionName == null) {
 			model.addAttribute("info", mapper.userCheck(sessionName));
 			return 0;
@@ -130,6 +134,47 @@ public class MemberServiceImpl implements MemberService {
 			model.addAttribute("info", mapper.kakaoMemberInfo(kakaoSessionName));
 			return 1;
 		}
+	}
+
+	@Override
+	public int modify_save(HttpServletRequest request, HttpServletResponse response) {
+		int result = 0;
+		String loginWay = request.getParameter("loginWay");
+		if(loginWay.equals("1")) {
+			KakaoMemberDTO dto = new KakaoMemberDTO();
+			dto.setId(request.getParameter("id"));
+			dto.setEmail(request.getParameter("email")); 
+			dto.setAddr(request.getParameter("addr1"));
+			//System.out.println(dto.getId() + "/" + dto.getEmail() + "/" + dto.getAddr());
+			
+			result = mapper.kakao_modify_save(dto);
+			
+		}else {
+			MemberDTO dto = new MemberDTO();
+			dto.setId(request.getParameter("id"));
+			dto.setAddr(request.getParameter("addr1"));
+			
+			String pw = request.getParameter("pw");
+			if(pw.equals("")) {
+				
+				PrintWriter out = null;
+				response.setContentType("text/html; charset=utf-8");
+				try {
+					out = response.getWriter();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				out.print("<script> alert('수정실패 : 변경할 비밀번호를 입력해주세요');"
+						+ "location.href='modify'; </script>");
+			}
+			else {
+			String securePw = encoder.encode(pw);
+			dto.setPw(securePw);
+			
+			result = mapper.modify_save(dto);
+			}
+		}
+		return result;
 	}
 
 }

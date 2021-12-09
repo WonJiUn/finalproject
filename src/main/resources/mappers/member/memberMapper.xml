@@ -48,4 +48,12 @@
 	<select id="kakaoMemberInfo" resultMap="kakaomember">
 		select * from kakaomember where email=#{email}
 	</select>
+	
+	<update id="kakao_modify_save">
+		update kakaomember set addr=#{addr} where id=#{id}
+	</update>
+	
+	<update id="modify_save">
+		update member set addr=#{addr}, pw=#{pw} where id=#{id}
+	</update>
 </mapper>

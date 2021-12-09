@@ -2,6 +2,9 @@ package com.care.root.member.service;
 
 import java.sql.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.ui.Model;
 
 import com.care.root.member.dto.MemberDTO;
@@ -16,4 +19,5 @@ public interface MemberService {
 	public String KakaoLoginChk(String id, String email);
 	public int KakaoRegister(String id, String email);
 	public int mypage(Model model, String kakaoSessionName, String sessionName);
+	public int modify_save(HttpServletRequest request, HttpServletResponse response);
 }
