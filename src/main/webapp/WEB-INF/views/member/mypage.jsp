@@ -15,8 +15,8 @@
   
   <c:choose>
   	<c:when test="${loginWay == 1 }">
-  		아이디 : ${info.id } <br>
-  		이메일 : ${info.email }<br>
+  		카카오 아이디 : ${info.id } <br>
+  		카카오 이메일 : ${info.email }<br>
   		주소 : ${info.addr }<br>
   		<br><button onclick="location.href='modify'">회원정보 수정</button>
   	</c:when>

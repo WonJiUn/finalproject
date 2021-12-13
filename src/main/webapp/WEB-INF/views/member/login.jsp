@@ -31,8 +31,9 @@
     <a id="custom-login-btn" href="javascript:loginWithKakao()">
   <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/>
 </a>
+<!-- 이메일 체크해제시 자동으로 연결해제하게 코드수정
 <div onclick="kakaoLeave();"><a href="javascript:void(0)"><span>카카오 연결해제(DB삭제기능 미구현)</span></a></div>
-
+-->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -52,7 +53,8 @@ Kakao.init('6eaf5454c1d56a8e8e152088b0cfa32b');
     		        //console.log(response.kakao_account.email);
     		        var form = {id : response.id, email : response.kakao_account.email}
     		        if(response.kakao_account.email == null){
-    		        	alert('이메일 제공에 동의해주세요 - 연결 해제 후 다시가입 필요')
+    		        	alert('가입실패 : 이메일 제공에 동의해주세요')
+    		        	kakaoLeave();
     		        	//카카오 이메일 계정을 필수동의로 설정하지 못하여 발생한 문제
     		        	location.href="login";
     		        }
