@@ -31,7 +31,7 @@
     <a id="custom-login-btn" href="javascript:loginWithKakao()">
   <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/>
 </a>
-<!-- 이메일 체크해제시 자동으로 연결해제하게 코드수정
+<!-- 이메일 체크해제시 자동으로 연결해제(가입불가)하게 코드수정
 <div onclick="kakaoLeave();"><a href="javascript:void(0)"><span>카카오 연결해제(DB삭제기능 미구현)</span></a></div>
 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -58,20 +58,22 @@ Kakao.init('6eaf5454c1d56a8e8e152088b0cfa32b');
     		        	//카카오 이메일 계정을 필수동의로 설정하지 못하여 발생한 문제
     		        	location.href="login";
     		        }
-    	    		//console.log(form)
-    	    		$.ajax({
-    				url : "ajax_kakaoLogin",
-    				type : "POST",
-    				data : JSON.stringify(form),
-    				dataType : "text",
-    				contentType : "application/json; charset=utf-8",
-    				success : function(result){
-    					//console.log(result)
-    					
-    					location.href="successLogin?id=" + result;
-    				}
-		
-   				})
+    		        else{
+	    	    		//console.log(form)
+	    	    		$.ajax({
+	    				url : "ajax_kakaoLogin",
+	    				type : "POST",
+	    				data : JSON.stringify(form),
+	    				dataType : "text",
+	    				contentType : "application/json; charset=utf-8",
+	    				success : function(result){
+	    					//console.log(result)
+	    					
+	    					location.href="successLogin?id=" + result;
+	    				}
+			
+	   					})
+    		        }
     		        
     		    },
     		    fail: function(error) {
