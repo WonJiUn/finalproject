@@ -16,13 +16,34 @@
 		<result property="email" column="email"/>
 		<result property="addr" column="addr"/>
 	</resultMap>
+	
+	<resultMap id="booking" type="com.care.root.member.dto.BookingDTO">
+		<id property="lockerId" column="lockerid"/>
+		<result property="checkIn" column="checkin"/>
+		<result property="sDate" column="s_date"/>
+		<result property="id" column="id"/>
+	</resultMap>
 
 	<select id="userCheck" resultMap="member">
 		select * from member where id=#{id}
 	</select>
 	
 	<select id="memberInfo" resultMap="member">
-		select * from member
+		select B.* from(select rownum rn, A.* from
+		(select * from member order by id asc)A)B where rn between #{s} and #{e}
+	</select>
+	
+	<select id="kakaomemberList" resultMap="kakaomember">
+		select B.* from(select rownum rn, A.* from
+		(select * from kakaomember order by email asc)A)B where rn between #{s} and #{e}
+	</select>
+	
+	<select id="selectMemberCount" resultType="Integer">
+		select count(*) from member
+	</select>
+	
+	<select id="selectKakaomemberCount" resultType="Integer">
+		select count(*) from kakaomember
 	</select>
 	
 	<insert id="register">
@@ -56,4 +77,26 @@
 	<update id="modify_save">
 		update member set addr=#{addr}, pw=#{pw} where id=#{id}
 	</update>
+	
+	<select id="bookingList" resultMap="booking">
+		select * from booking
+	</select>
+	
+	<select id="searchId" resultMap="member">
+		select B.* from(select rownum rn, A.* from
+		(select * from member where id like '%'||#{userId}||'%' order by id asc)A)B where rn between #{s} and #{e}
+	</select>
+	
+	<select id="searchEmail" resultMap="kakaomember">
+		select B.* from(select rownum rn, A.* from
+		(select * from kakaomember where email like '%'||#{userEmail}||'%' order by email asc)A)B where rn between #{s} and #{e}
+	</select>
+	
+	<select id="selectSearchIdCount" resultType="Integer">
+		select count(*) from member where id like '%'||#{userId}||'%'
+	</select>
+	
+	<select id="selectSearchEmailCount" resultType="Integer">
+		select count(*) from kakaomember where email like '%'||#{userEmail}||'%'
+	</select>
 </mapper>

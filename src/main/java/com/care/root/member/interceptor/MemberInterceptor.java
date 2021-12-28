@@ -19,11 +19,17 @@ public class MemberInterceptor extends HandlerInterceptorAdapter implements Memb
 		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute(LOGIN) == null) {
+		String requestUrl = request.getRequestURL().toString();
+		
+		if(requestUrl.contains("/login")){
+			return true;
+		}
+		
+		else if(session.getAttribute(LOGIN) == null) {
 			//response.sendRedirect("login");
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
-			out.print("<script>alert('로그인 해라!!!');"
+			out.print("<script>alert('로그인 후 이용해 주시기 바랍니다');"
 					+ " location.href='" + request.getContextPath() + "/member/login'; </script>");
 			return false;
 			//true면 사용자가 요청한 경로 그대로 들어가고, false면 해당하는 경로로 연결하지 않겠다는 뜻

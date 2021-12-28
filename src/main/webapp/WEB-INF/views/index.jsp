@@ -12,9 +12,9 @@
 
 </head>
 <body>
-
+<div class="header">
 <c:import url="default/header.jsp"></c:import>
-
+</div>
 	<div class="container">
 		<h2><span>나의 짐을 맡아줘</span><br>Light Trip!</h2>		
 	</div>
@@ -100,7 +100,7 @@ Kakao.init('6eaf5454c1d56a8e8e152088b0cfa32b');
     		        	alert('가입실패 : 이메일 제공에 동의해주세요')
     		        	kakaoLeave();
     		        	//카카오 이메일 계정을 필수동의로 설정하지 못하여 발생한 문제
-    		        	location.href="login";
+    		        	location.href="index";
     		        }
     		        else{
 	    	    		//console.log(form)
@@ -113,7 +113,7 @@ Kakao.init('6eaf5454c1d56a8e8e152088b0cfa32b');
 	    				success : function(result){
 	    					//console.log(result)
 	    					
-	    					location.href="successLogin?id=" + result;
+	    					location.href="member/successLogin?id=" + result;
 	    				}
 			
 	   					})

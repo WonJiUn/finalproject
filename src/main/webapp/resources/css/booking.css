@@ -26,29 +26,8 @@ body
 .popup
 {
 	display: flex;
-	height: 550px;
+	height: 70vh;
 	width: 100%;
-}
-
-#sizePopup
-{
-    position: fixed;
-    top: 7%;
-    left: -80%;
-    transform: translate(-10%, 5%);
-    transition: 0.8s;
-    background-color: #fff;
-    width: 900px;
-    height: 530px;
-    border-radius: 15px;
-    padding: 80px 50px 50px;
-    visibility: hidden;
-}
-
-#sizePopup.active
-{
-	visibility: visible;
-	left: 26.5%;
 }
 
 #stationPopup
@@ -60,9 +39,10 @@ body
     transition: 0.8s;
     background-color: #fff;
     width: 900px;
-    height: 530px;
+    height: 70vh;
     border-radius: 15px;
     padding: 80px 50px 50px;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
 
@@ -81,9 +61,9 @@ body
     transition: 0.8s;
     background-color: #fff;
     width: 900px;
-    height: 530px;
+    height: 70vh;
     border-radius: 15px;
-    padding: 80px 50px 50px;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
 
@@ -91,6 +71,106 @@ body
 {
 	visibility: visible;
 	left: 26.5%;
+}
+
+.popup .p-content
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.popup .p-content .c-title
+{
+	width: 100%;
+    height: 15%;
+    background: #ff8040c9;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 20px;
+}
+
+#datePopup .p-content .calendars
+{
+	width: 100%;
+    height: 50%;
+    margin: 50px 0;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#datePopup .p-content .c-select
+{
+	width: 100%;
+	height: 15%;
+	display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#datePopup .p-content .calendars .today
+{
+	font-size: 24px;
+    box-shadow: 10px -10px 20px -10px rgb(0 0 0 / 40%);
+    width: 250px;
+    height: 250px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#datePopup .p-content .calendars .today .day
+{
+	font-size: 60px;
+}
+
+#datePopup .p-content .calendars .yesterday, .tomorrow
+{
+    font-size: 18px;
+    box-shadow: 10px -10px 20px -10px rgb(0 0 0 / 40%);
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    font-weight: 600;
+    color: #bebebe;
+}
+
+#datePopup .p-content .calendars .yesterday .day0, .tomorrow .day2
+{
+	font-size: 40px;
+}
+
+#datePopup .p-content .calendar div
+{
+	height: 25%;
+	width: 100%;
+	position: relative;
+	line-height: 40px;
+}
+
+#datePopup .p-content .calendar .year
+{
+    background:#ffc800;
+    color: #fff;
+    font-size: 30px;
+}
+
+#datePopup .p-content .calendar .year0, .year2
+{
+    background:#bebebe;
+    color: #fff;
+    font-size: 20px;
 }
 
 #timePopup
@@ -102,9 +182,10 @@ body
     transition: 0.8s;
     background-color: #fff;
     width: 900px;
-    height: 530px;
+    height: 70vh;
     border-radius: 15px;
     padding: 80px 50px 50px;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
 
@@ -114,25 +195,90 @@ body
 	left: 26.5%;
 }
 
-#confPopup
+#sizePopup
 {
     position: fixed;
     top: 7%;
-    right: -80%;
+    left: -80%;
     transform: translate(-10%, 5%);
     transition: 0.8s;
     background-color: #fff;
     width: 900px;
-    height: 530px;
+    height: 70vh;
+    border-radius: 15px;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
+    visibility: hidden;
+}
+
+#sizePopup.active
+{
+	visibility: visible;
+	left: 26.5%;
+}
+
+#sizePopup .p-content table .loc
+{
+	cursor: pointer;
+    background-color: #a2d8ff;
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+}
+
+#sizePopup .p-content table .Kiosk
+{
+    background-color: #fa8a8a;
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+}
+
+#sizePopup .p-content .selected
+{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
+    align-items: center;
+	margin-bottom: 40px;
+}
+
+#sizePopup .p-content .selected h3
+{
+	color: #989aa2;
+}
+
+#sizePopup .p-content .selected #sel-locker
+{
+	color: #ffffff;
+    background-color: #ffc800;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+#confPopup
+{
+    position: fixed;
+    top: 7%;
+    left: 120%;
+    transform: translate(-10%, 5%);
+    transition: 0.8s;
+    background-color: #fff;
+    width: 900px;
+    height: 70vh;
     border-radius: 15px;
     padding: 80px 50px 50px;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
 
 #confPopup.active
 {
 	visibility: visible;
-	right: 14.9%;
+	left: 26.5%;
 }
 
 .close

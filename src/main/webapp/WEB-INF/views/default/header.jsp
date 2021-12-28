@@ -20,12 +20,15 @@
 .header {
 	display: flex;
 	width: 100%;
-	background-color: white;
+	background-color: rgba(#ffc800 0);
+	z-index: 1000;
 }
 
 .navdiv {
 	display: flex;
 	width: 100%;
+	justify-content: flex-end;
+    margin-right: 30px;
 }
 
 nav {
@@ -70,22 +73,34 @@ nav ul li a:hover {
 .content {
 	margin-top: 50px;
 }
+
+.myPage
+{
+ cursor: pointer;
+}
 </style>
+
 </head>
 <body>
 	<div class="navdiv">
 		<div class="wrap">
 			<nav>
 				<ul>
-					<li><a href="${contextPath }/index">HOME</a></li>
 					<li>
-						<a href="${contextPath }/member/memberInfo">MEMBER_SHIP</a>
+						<a href="${contextPath }/">HOME</a>
+					</li>
+					<li>
+						<c:choose>
+							<c:when test="${sessionScope.loginUser eq 'admin'}">
+								<a href="${contextPath }/member/memberInfo">ADMIN</a>
+							</c:when>
+						</c:choose>
 					</li>
 					<li>
 						<a href="${contextPath }/board/FAQ">FAQ</a>
 					</li>
 					<li>
-						<a href="${contextPath }/map/KakaoMaps">지도</a>
+						<a href="${contextPath }/map/KakaoMaps">MAP</a>
 					</li>
 					
 					<li>

@@ -35,7 +35,7 @@ public class MemberController implements MemberSessionName {
 	
 	@GetMapping("/login")
 	public String login() {
-		//System.out.println("멤버 로그인 연결");
+		System.out.println("가입 후 리다이렉트 실행");
 		return "member/login";
 	}
 	
@@ -47,13 +47,14 @@ public class MemberController implements MemberSessionName {
 		
 		int result = ms.userCheck(id,pw);
 		//System.out.println("autoLogin : " + autoLogin);
-		
+		System.out.println("아이디 체크 결과 성공 시 0, 실패 시 1 : "+ result);
 		if(result == 0) {
 			rs.addAttribute("id", id);	//successLogin으로 값을 넘겨줌. 리다이렉트일때는 모델이 아니라 이런 방식으로 해야됨
 			rs.addAttribute("autoLogin", autoLogin);
 			return "redirect:successLogin";
 			//로그인 성공일때
 		}else {
+			
 			return "redirect:login";
 			//로그인 실패일때. return이 1
 		}
@@ -65,9 +66,11 @@ public class MemberController implements MemberSessionName {
 			HttpSession session,
 			HttpServletResponse response) {
 		System.out.println("id : " + id);
-		System.out.println("autoLogin : " + autoLogin);
+		
+		//System.out.println("autoLogin : " + autoLogin);
 		
 		session.setAttribute(LOGIN, id);
+		System.out.println("session : " + LOGIN);
 		
 		if(autoLogin != null) {
 			int limitTime = 60*60*24*90; //자동로그인에 체크했다면 90일간 쿠키를 만들어줌
@@ -85,6 +88,11 @@ public class MemberController implements MemberSessionName {
 			ms.keepLogin(session.getId(), limitDate, id);
 		}
 		
+		return "redirect:index";
+	}
+	
+	@GetMapping("/index")
+	public String memberindex() {
 		return "member/successLogin";
 	}
 	
@@ -113,9 +121,14 @@ public class MemberController implements MemberSessionName {
 	}
 	
 	@GetMapping("memberInfo")
-	public String memberInfo(Model model, HttpSession session) {
+	public String memberInfo(Model model, @RequestParam(value="id", required=false) String id,
+			HttpSession session, @RequestParam(required = false, defaultValue = "1" ) int num) {
 		//if(session.getAttribute(LOGIN) != null) {
-			ms.memberInfo(model);
+		if(id != null) {
+			ms.searchId(model, id, num);
+		}else {
+			ms.memberInfo(model, num);
+		}
 			return "member/memberInfo";
 		//}
 		//로그인세션이 있으면 멤버인포로 보내주고, 아니면 로그인창으로 보냄.
@@ -123,10 +136,29 @@ public class MemberController implements MemberSessionName {
 		//return "redirect:login";
 	}
 	
+	@GetMapping("kakaoMemberInfo")
+	public String kakaoMemberInfo(Model model, @RequestParam(value="email", required=false) String email,
+			@RequestParam(required = false, defaultValue = "1" ) int num) {
+		if(email != null) {
+			ms.searchEmail(model, email, num);
+		}else {
+			ms.kakaoMemberInfo(model, num);
+		}
+			
+			return "member/kakaoMemberInfo";
+		
+	}
+	
 	@GetMapping("info")
 	public String info(@RequestParam String id, Model model) {
 		ms.info(model, id);
 		return "member/info";
+	}
+	
+	@GetMapping("kakaoInfo")
+	public String kakaoInfo(@RequestParam String email, Model model) {
+		ms.kakaoInfo(model, email);
+		return "member/kakaoInfo";
 	}
 	
 	@GetMapping("register_form")
@@ -206,8 +238,13 @@ public class MemberController implements MemberSessionName {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			/*
+			 * out.print("<script> alert('회원정보가 수정되었습니다');" +
+			 * "location.href='mypage'; </script>");
+			 */
 			out.print("<script> alert('회원정보가 수정되었습니다');"
-					+ "location.href='mypage'; </script>");
+					+ "opener.parent.location.reload();" //부모 페이지 새로고침
+					+ "window.close(); </script>");
 			
 		}else {
 			PrintWriter out = null;
@@ -223,6 +260,20 @@ public class MemberController implements MemberSessionName {
 		}
 	}
 	
+	@PostMapping(value="txtIdChk", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String txtIdChk(@RequestBody Map txtIdChk) {	
+		System.out.println("입력아이디 : " + txtIdChk.get("id").toString());
+		
+		String result = ms.txtIdChk(txtIdChk.get("id").toString());
+		System.out.println("사용여부 : " + result);
+		return result;
+	}
 	
-	
+	@GetMapping("bookingList")
+	public String bookingList(Model model) {
+		
+			ms.bookingList(model);
+			return "member/bookingList";
+	}
 }

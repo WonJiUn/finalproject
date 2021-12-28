@@ -13,11 +13,12 @@ body
 {
 	position: relative;
 	overflow: hidden;
-	/* display: flex; */
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	min-height: 50vh;
 	background: #ffc800;
+	flex-direction: column;
 }
 
 .container

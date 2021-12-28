@@ -1,36 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
+<title>Login</title>
+<link rel="stylesheet" href="../resources/css/login.css">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="../default/header.jsp"/>
-<div class="wrap content">
-<div align="center"><h1>로그인 페이지 입니다</h1></div>
-<div align="right">
-    <form action = "/root/member/user_check" method="post">
-        <table>
-  <tr>
-  <td><input type="text" name="id" placeholder="아이디"></td>
-  <td rowspan="2">
-  <input type="submit" value="로그인"style="width:60px;height:55px;">
-  </td></tr>
-  <tr><td><input type="text" name="pw" placeholder="비밀번호"></td></tr>
-  <tr><td colspan="2" align="left"><a href="register_form">회원가입</a>
-  		<input type="checkbox" name="autoLogin">로그인 유지
-  			</td></tr>
-        </table>
-    </form>
+<div class="center">
 
-   
-    <a id="custom-login-btn" href="javascript:loginWithKakao()">
-  <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/>
-</a>
+	<div class="left">
+		<img alt="logo" src="../resources/images/logo.png">
+		<h1>환영합니다!!</h1>
+		<h2>welcome!!</h2>
+		<P>
+			잠시 짐을 맡겨야 할 때,<br>
+			여행 중 무거운 짐이 있을 때,<br>
+			언제든 가까운 곳에 Light Trip이 있습니다
+		</P>
+		<input class="login_btn" type="button" value="HOME" onclick="location.href='../';">
+	</div>
+	
+	<div class="right">
+		<div class="title"><h1>Log In</h1></div>
+    	<form action = "/root/member/user_check" method="post">
+    		
+    		<div class="txt_field">
+				<input type="text" required name="id" id="txtId"> <span></span>
+				<label>Enter ID</label>
+			</div>
+  			
+  			<div class="txt_field">
+ 				<input type="password" required name="pw"> <span></span>
+  				<label>Enter Password</label>
+  			</div>
+  				
+  			<input type="submit" value="Login">
+  			<div class="reg_auto">
+  				<a href="register_form">회원가입</a>
+  				<div><input type="checkbox" name="autoLogin">로그인 유지</div>
+  			</div>
+    	</form>
+    	<a id="custom-login-btn" href="javascript:loginWithKakao()">
+  			<img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/>
+		</a>
 <!-- 이메일 체크해제시 자동으로 연결해제(가입불가)하게 코드수정
 <div onclick="kakaoLeave();"><a href="javascript:void(0)"><span>카카오 연결해제(DB삭제기능 미구현)</span></a></div>
 -->
@@ -107,9 +123,7 @@ function kakaoLeave() {
 
 </script>
     
+	</div>
 </div>
-</div>
-<c:import url="../default/footer.jsp"/>
-
 </body>
 </html>

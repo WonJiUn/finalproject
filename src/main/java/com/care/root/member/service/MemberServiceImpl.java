@@ -33,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int userCheck(String id, String pw) {
+		System.out.println("입력한 ID :"+ id);
+		System.out.println("입력한 PW :"+ pw);
 		MemberDTO dto = mapper.userCheck(id);
 		if(dto != null) {
 			//if(pw.equals(dto.getPw())) {
@@ -47,8 +49,43 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void memberInfo(Model model) {
-		model.addAttribute("memberList", mapper.memberInfo());
+	public void memberInfo(Model model, int num) {
+		
+		int pageLetter = 5;
+		int allCount = mapper.selectMemberCount();
+		int repeat = allCount / pageLetter;
+		if(allCount % pageLetter != 0) {
+			repeat += 1;
+		}
+		int end = num * pageLetter;
+		int start = end + 1 - pageLetter;
+		
+		model.addAttribute("repeat", repeat);
+		//System.out.println("시작값" + start + "끝나는값" + end);
+		model.addAttribute("memberList", mapper.memberInfo(start, end));
+		//model.addAttribute("kakaoList", mapper.kakaomemberList(start,end));
+		
+		//memberList라는 이름으로 arrayList값을 꺼내서 쓸 수 있다.
+		//memberInfo.jsp에서 forEach를 이용해 리스트를 표로 만들어 사용함
+	}
+	
+	@Override
+	public void kakaoMemberInfo(Model model, int num) {
+		
+		int pageLetter = 5;
+		int allCount = mapper.selectKakaomemberCount();
+		int repeat = allCount / pageLetter;
+		if(allCount % pageLetter != 0) {
+			repeat += 1;
+		}
+		int end = num * pageLetter;
+		int start = end + 1 - pageLetter;
+		
+		model.addAttribute("repeat", repeat);
+		//System.out.println("시작값" + start + "끝나는값" + end);
+		
+		model.addAttribute("kakaoList", mapper.kakaomemberList(start,end));
+		
 		//memberList라는 이름으로 arrayList값을 꺼내서 쓸 수 있다.
 		//memberInfo.jsp에서 forEach를 이용해 리스트를 표로 만들어 사용함
 	}
@@ -56,6 +93,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void info(Model model, String id) {
 		model.addAttribute("info", mapper.userCheck(id));
+	}
+	
+	@Override
+	public void kakaoInfo(Model model, String email) {
+		model.addAttribute("kakaoInfo", mapper.kakaoMemberInfo(email));
 	}
 
 	@Override
@@ -77,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 			//가입실패시 개발자가 보는 콘솔창에 로그는 띄우지만 사용자가 보는 페이지는 계속 동작하게 함
 		}
-		
+		System.out.println("회원가입 성공 시 1, 실패 시 0 : "+result);
 		return result;
 	}
 
@@ -175,6 +217,63 @@ public class MemberServiceImpl implements MemberService {
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	public String txtIdChk(String id) {
+		MemberDTO dto = mapper.userCheck(id);
+		String used = "";
+		if(dto != null) {
+			used = "이미 사용중인 아이디 입니다";
+			/*
+			 * System.out.println(dto); System.out.println(dto.getId());
+			 * System.out.println(dto.getAddr());
+			 */		}
+		else {
+			used = "사용 가능한 아이디 입니다";
+		}
+		return used;
+	}
+	
+	@Override
+	public void bookingList(Model model) {
+		model.addAttribute("bookingList", mapper.bookingList());
+		
+	}
+	
+	@Override
+	public void searchId(Model model, String userId, int num) {
+		//model.addAttribute("memberList", mapper.searchId(userId));
+		
+		int pageLetter = 5;
+		int allCount = mapper.selectSearchIdCount(userId);
+		int repeat = allCount / pageLetter;
+		if(allCount % pageLetter != 0) {
+			repeat += 1;
+		}
+		int end = num * pageLetter;
+		int start = end + 1 - pageLetter;
+		
+		model.addAttribute("repeat", repeat);
+		
+		model.addAttribute("memberList", mapper.searchId(userId, start, end));
+	}
+
+	@Override
+	public void searchEmail(Model model, String userEmail, int num) {
+		int pageLetter = 5;
+		int allCount = mapper.selectSearchEmailCount(userEmail);
+		int repeat = allCount / pageLetter;
+		if(allCount % pageLetter != 0) {
+			repeat += 1;
+		}
+		int end = num * pageLetter;
+		int start = end + 1 - pageLetter;
+		
+		model.addAttribute("repeat", repeat);
+		
+		model.addAttribute("kakaoList", mapper.searchEmail(userEmail, start, end));
+		
 	}
 
 }

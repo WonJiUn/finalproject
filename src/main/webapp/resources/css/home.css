@@ -1,0 +1,252 @@
+@charset "EUC-KR";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
+*
+{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Popins', sans-serif;
+}
+
+.home
+{
+	background-image: url("../images/bg1.jpg");
+  	/* background-color: #cccccc; */
+  	/* height: 500px; */
+  	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	position: relative;
+}
+
+.main
+{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.logo
+{
+	border: 5px solid #ffc800;
+	padding: 10px;
+	text-align: center;
+	color: #fff;
+}
+
+.logo_img
+{
+	width:100px;
+}
+
+.massage
+{
+	text-align: center;
+	color: #fff;
+	font-size: 50px;
+	margin: 50px 0;
+}
+
+.go
+{
+	width: 150px;
+	background-color: #ffc800;
+	color: #fff;
+	font-size: 25px;
+	font-weight: 700;
+	cursor: pointer;
+	margin-bottom: 100px;
+}
+
+.go:hover
+{
+	background-color: #ffbc00;
+	transition: 0.5s;
+}
+
+.show
+{
+	margin-bottom: 20px;
+}
+
+.down
+{
+	width: 30px;
+	cursor: pointer;
+}
+
+.container
+{
+	margin: 100px 50px 50px 50px;
+}
+
+.cont0
+{
+	margin-bottom: 150px;
+}
+
+.container .title
+{
+	display: flex;
+    flex-direction: column;
+}
+
+.container .title .nav
+{
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container .title .nav div
+{
+	width: 40%;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .title .nav div a
+{
+	width: 30%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ffc800;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+}
+
+.container .title .nav div a:hover
+{
+	background-color: #ffbc00;
+	transition: 0.5s;
+}
+
+.container .title hr
+{
+	margin: 20px 0;
+}
+
+.container .title .title_txt
+{
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container .title div p
+{
+	margin-top: 30px;
+}
+
+.expln
+{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+	width: 100%;
+	margin-top: 50px;
+}
+
+.expln img
+{
+	width: 100px;
+}
+
+.exp
+{
+	width: 25%;
+	height: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+    align-items: center;
+    margin: 0 25px;
+    border: 1px solid #d0cccc;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+
+.FAQ
+{
+	display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    font-size: 0.8em;
+}
+
+/* .cont2 .FAQ a
+{
+	cursor: pointer;
+} */
+
+.cont3 .exp
+{
+	height: 600px;
+}
+
+.exp div
+{	
+	display: flex;
+	justify-content: center;
+    align-items: center;
+    flex-direction: column;
+	width: 100%;
+	height: 200px;
+}
+
+.exp_cont
+{
+	text-align: center;
+	background-color: #fbf9ef;;
+}
+
+.exp_price table
+{
+	width: 70%;
+    text-align: center;
+}
+
+.exp_price table td
+{
+	width: 33%;
+    padding: 5px;
+}
+
+.gobk
+{
+	width: 100%;
+    height: 50px;
+    background-color: #ffc800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+/* 	position: sticky;
+    bottom: 0px; */
+    cursor: pointer;
+}
+
+.gobk:hover
+{
+	background-color: #ffbc00;
+	transition: 0.5s;
+}
+
+.gobk h2
+{
+	text-decoration: none;
+	color: #fff;
+}

@@ -1,0 +1,130 @@
+@charset "EUC-KR";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
+
+body
+{
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', sans-serif;
+	background: linear-gradient(120deg, #ffc800, #fff);
+	height: 100vh;
+	overflow: hidden;
+}
+
+.previous
+{
+	width: 50px;
+    margin: 20px;
+}
+
+.previous:hover
+{
+	width: 40px;
+	margin: 25px;
+}
+
+.center
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 900px;
+	background: white;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+    box-shadow: 0px 0px 20px 0px #cccccc;
+}
+
+.left
+{
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	background-color: #ffc800;
+	margin: 10px;
+    padding: 20px;
+}
+
+.left .user
+{
+	width: 200px;
+}
+
+.left .left-container
+{
+	margin: 15px;
+	display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.left .left-container #id
+{
+	font-size: 2em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.left .left-container #condition
+{
+	font-size: 0.7em;
+    font-weight: 500;
+}
+
+.left .edit
+{
+	width: 40px;
+	cursor: pointer;
+}
+
+.left .edit:hover
+{
+	width: 30px;
+}
+
+.right
+{
+	width: 70%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.right .title h1
+{
+	border-bottom: 1px solid silver;
+}
+
+.right .info
+{
+	display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: baseline;
+    width: 100%;
+}
+
+.right .info .info-child
+{
+	width: 50%;
+	padding: 0 10px;
+}
+
+.right .info .info-child h3
+{
+	border-bottom: 1px solid gray;
+}
+
+.right .info .info-child h4
+{
+	color: gray;
+}

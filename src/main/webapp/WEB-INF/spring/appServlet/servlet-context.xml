@@ -25,8 +25,19 @@
 	
 	<beans:bean id="memberInterceptor" class="com.care.root.member.interceptor.MemberInterceptor"/>
 	<beans:bean id="autoLogin" class="com.care.root.member.interceptor.AutoLoginInterceptor"/>
+	<beans:bean id="adminInterceptor" class="com.care.root.member.interceptor.AdminInterceptor"/>
 	
 	<interceptors>
+		<interceptor>
+			<!--<mapping path="/index"/>  -->
+			<mapping path="/member/memberInfo**"/>
+			<mapping path="/member/kakaoMemberInfo**"/>
+			<mapping path="/member/info**"/>
+			<mapping path="/member/kakaoInfo**"/>
+			<mapping path="/member/bookingList"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+		
 		<interceptor>
 			<!--<mapping path="/index"/>  -->
 			<mapping path="/index"/>
@@ -34,10 +45,12 @@
 		</interceptor>
 		<interceptor>
 			<!--<mapping path="/index"/>  -->
+			
+			<mapping path="/member/index"/>
 			<mapping path="/member/modify_save"/>
 			<mapping path="/member/modify"/>
 			<mapping path="/member/mypage"/>
-			<mapping path="/member/memberInfo"/>
+			<!--mapping path="/member/memberInfo"/-->
 			<beans:ref bean="memberInterceptor"/>
 		</interceptor>
 		
