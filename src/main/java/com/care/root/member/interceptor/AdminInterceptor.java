@@ -19,8 +19,16 @@ public class AdminInterceptor extends HandlerInterceptorAdapter implements Membe
 		HttpSession session = request.getSession();
 		//System.out.println("인터셉터 : " + session.getAttribute(LOGIN));
 		
-		if(session.getAttribute(LOGIN).equals("admin")) {
-			return true;
+		if(session.getAttribute(LOGIN) != null) {
+			if(session.getAttribute(LOGIN).equals("admin")) {
+				return true;
+			}else {
+				response.setContentType("text/html; charset=utf-8");
+				PrintWriter out = response.getWriter();
+				out.print("<script>alert('잘못된 접근입니다');"
+						+ " location.href='" + request.getContextPath() + "/'; </script>");
+				return false;
+			}
 		}else {
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
@@ -28,7 +36,6 @@ public class AdminInterceptor extends HandlerInterceptorAdapter implements Membe
 					+ " location.href='" + request.getContextPath() + "/'; </script>");
 			return false;
 		}
-		
 	}
 
 }

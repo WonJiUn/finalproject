@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,9 +36,32 @@ function previous() {
 <script>
 function modify() {
 	var url = "${contextPath }/root/member/modify";
-	var option = "width=400,height=400,top=200,left=700,scrollbars=no,location=no,toolbars=no,status=no"
+	var option = "width=500,height=400,top=200,left=700,scrollbars=no,location=no,toolbars=no,status=no"
 	console.log(url);
 	window.open(url,"new",option);
+}
+</script>
+
+<script type="text/javascript">
+function bookingCancel(lockerId){
+	var form = {cancelId : lockerId}
+	
+	var confirmValue = confirm(lockerId.toUpperCase() + ' : 정말 취소하시겠습니까?')
+	
+	if(confirmValue == true){
+		$.ajax({
+			url : "ajax_bookingCancel",
+			type : "POST",
+			data : JSON.stringify(form),
+			dataType: "text",
+			contentType: 'application/json',
+			success:function(result){
+				alert(lockerId.toUpperCase() + ' : 예약이 취소되었습니다')
+				location.reload();
+			}
+		})
+	}
+	
 }
 </script>
 
@@ -110,7 +133,25 @@ function modify() {
   			<div class="info">
   				<div class=" info-child">
   					<h3>예약현황(취소)</h3>
-  					<h4>예약 없음</h4>
+  					<h4>
+  					<table>
+  						<c:choose>
+  							<c:when test="${empty mypage_booking }">
+  								예약없음
+  							</c:when>
+  							<c:otherwise>
+  								<c:forEach items="${mypage_booking }" var="booking">
+  				
+  									<tr>
+  										<td>${fn:toUpperCase(booking.lockerId) } / ${booking.sDate }</td>
+  										<td><input type="button" value="예약취소" name="cancel" onclick="bookingCancel('${booking.lockerId}')"></td>
+  									</tr>
+  									
+  								</c:forEach>
+  							</c:otherwise>
+  						</c:choose>
+  						</table>
+  					</h4>
   				</div>
   			</div>
   		</div>

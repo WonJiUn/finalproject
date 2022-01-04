@@ -41,15 +41,119 @@ body
     width: 900px;
     height: 70vh;
     border-radius: 15px;
-    padding: 80px 50px 50px;
     box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
 
+#p_click
+{
+	display: flex;
+align-items: center;
+justify-content: center;
+    align-content: center;  
+}
+#n_click{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    align-content: center;  
+}
 #stationPopup.active
 {
 	visibility: visible;
 	left: 26.5%;
+}
+
+#stationPopup .p-content .stations
+{
+   
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;  
+}
+
+#stationPopup .p-content .stations .station
+{
+	width: 100%;
+	height: 100%;
+	text-align:center;
+	padding-left: 15px;
+	cursor: pointer;
+}
+
+#stationPopup .p-content .stations .station:hover
+{
+	width: 100%;
+	height: 100%;
+	text-align:center;
+	box-shadow: 10px 10px 10px -10px rgba(0,0,0,0.4);
+	transition: 0.5s;
+}
+
+#stationPopup .p-content .stations .sel-station
+{
+	width: 100%;
+	height: 100%;
+	text-align:center;
+	background-color:#ffc800;
+	color:#fff;
+	padding-right: 15px;
+	box-shadow: 10px 10px 10px -10px rgba(0,0,0,0.4);
+	transition: 0.5s;
+}
+
+.stations .ch, .ss, .ul, .gh, .gr
+{
+	margin-bottom: 10px;
+	background-color: #f4f4f4
+}
+
+.stations .ch, .ss
+{
+    color:#3880ff;
+}
+
+.stations .ch:hover, .ss:hover
+{
+    color:#fff;
+	background-color: #3880ff;
+}
+
+.stations .ul
+{
+    color:#3acf3f;
+}
+
+.stations .ul:hover
+{
+    color:#fff;
+	background-color: #3acf3f;
+}
+
+.stations .gh
+{
+	color:#b966e3;
+}
+
+.stations .gh:hover
+{
+	color:#fff;
+	background-color: #b966e3;
+}
+
+.stations .gr
+{
+	color:#f4a942;
+}
+
+.stations .gr:hover
+{
+	color:#fff;
+	background-color: #f4a942;
 }
 
 #datePopup
@@ -95,6 +199,41 @@ body
     align-items: center;
     color: #fff;
     padding: 20px;
+}
+
+.popup .p-content .selected
+{
+	width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.popup .p-content .selected h3
+{
+	margin: 0 10px;
+	color: gray;
+}
+
+.popup .p-content button
+{
+	margin-bottom: 15px;
+	margin-left: 750px;
+	width: 100px;
+	font-size: 20px;
+	font-weight:500;
+	color: #ffc800;
+	background-color:#ffffff;
+	border: 1px solid #bfbfbf;
+	border-radius: 15px;
+	cursor: pointer;
+}
+
+.popup .p-content button:hover
+{
+	color: #ffffff;
+	background-color:#ffc800;
+	transition: 0.5s;
 }
 
 #datePopup .p-content .calendars
@@ -184,7 +323,6 @@ body
     width: 900px;
     height: 70vh;
     border-radius: 15px;
-    padding: 80px 50px 50px;
     box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
@@ -193,6 +331,53 @@ body
 {
 	visibility: visible;
 	left: 26.5%;
+}
+
+#timePopup .p-content .time
+{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+}
+
+#timePopup .p-content .time .time-part
+{
+	width: 20%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    color: #fff;
+    background-color: #75c5ff;
+    cursor:pointer;
+    border-radius:15px;
+}
+
+#timePopup .p-content .time .time-part:hover
+{
+   width: 22%;
+   height: 220px;
+}
+
+#timePopup .p-content .time .sel-time
+{
+    width: 23%;
+    height: 230px;
+    border-radius:15px;
+    color: #ffffff;
+    background-color: #ffc800;
+    box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
+    transition: 0.5s;
+}
+
+#timePopup .p-content .time .time-part h1
+{
+	font-size: 2.5em;
 }
 
 #sizePopup
@@ -226,6 +411,16 @@ body
     font-weight: 700;
 }
 
+#sizePopup .p-content table .loc:hover
+{
+   background-color:#93c0e1;
+}
+
+#sizePopup .p-content table .booked
+{
+	cursor: default;
+}
+
 #sizePopup .p-content table .Kiosk
 {
     background-color: #fa8a8a;
@@ -235,19 +430,35 @@ body
     font-weight: 700;
 }
 
-#sizePopup .p-content .selected
+#sizePopup .p-content .selected .selected-1, .selected-2
 {
-	width: 100%;
 	display: flex;
-	flex-direction: row;
+    flex-direction: row;
+    align-content: center;
     justify-content: center;
     align-items: center;
-	margin-bottom: 40px;
 }
 
-#sizePopup .p-content .selected h3
+#sizePopup .p-content .selected h5
 {
-	color: #989aa2;
+    color: #818181;
+    margin-right: 20px;
+    margin-left: 5px;
+}
+
+#sizePopup .p-content .selected .blue
+{
+	color: #a2d8ff;
+}
+
+#sizePopup .p-content .selected .gray
+{
+	color: #bebebe;
+}
+
+#sizePopup .p-content .selected .orange
+{
+	color: #ffc800;
 }
 
 #sizePopup .p-content .selected #sel-locker
@@ -270,7 +481,6 @@ body
     width: 900px;
     height: 70vh;
     border-radius: 15px;
-    padding: 80px 50px 50px;
     box-shadow: 10px -10px 20px -10px rgba(0,0,0,0.4);
     visibility: hidden;
 }
@@ -279,6 +489,80 @@ body
 {
 	visibility: visible;
 	left: 26.5%;
+}
+
+#confPopup .p-content .book-result
+{
+	width: 100%;
+	display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#confPopup .p-content .book-result .book-left
+{
+	width: 40%;
+	display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#confPopup .p-content .book-result .book-left img
+{
+	width: 40%;
+	margin-bottom: 30px;
+}
+
+#confPopup .p-content .book-result .book-right
+{
+	width: 60%;
+	display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .book-right .book-title
+{
+	border-bottom: 1px solid gray;
+	margin-bottom: 30px;
+} */
+
+.book-right .book-info
+{
+	width: 60%;
+	padding-left: 50px;
+	border-left: 1px solid gray;
+	background-color: #ffffff;
+}
+
+.book-right .book-info h3
+{
+	border-bottom: 1px solid gray;
+}
+
+.book-right .book-info .books div
+{
+	display: flex;
+    flex-direction: row;
+    margin: 10px 0 20px 0;
+    padding-left: 10px;
+}
+
+.book-right .book-info .books img
+{
+	width: 20px;
+}
+
+.book-right .book-info h4
+{
+	margin-left: 10px;
+	color: gray;
 }
 
 .close

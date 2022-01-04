@@ -5,6 +5,7 @@ public class BookingDTO {
 	private String checkIn;
 	private String sDate;
 	private String id;
+	private String email;
 	public String getLockerId() {
 		return lockerId;
 	}
@@ -28,5 +29,11 @@ public class BookingDTO {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

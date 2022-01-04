@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="${contextPath }/resources/css/admin.css">
 <title>Insert title here</title>
 
 <style>
@@ -40,9 +41,12 @@
 
 </head>
 <body >
+<div class="header"  style="margin-bottom: 20px;">	
 	<c:import url="../default/header.jsp" />
-	
-	<div class="map_wrap">
+</div>
+	 <h1 class="nav" style="margin-left:750px;">[ Location ]</h1>
+	 
+	<div class="map_wrap" style="margin-bottom: 70px;">
 			<div id="map" style="width: 700px; height: 400px; position: relative; margin-top: 20px; margin-bottom:10px; margin-left:500px; overflow: hidden ;"></div>	
 
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6eaf5454c1d56a8e8e152088b0cfa32b&libraries=services"></script>
@@ -137,31 +141,22 @@
 	<div class="box_info1">서울특별시 중구 세종대로 101, 시청역 5번출구</div>
 </div>
 	<div class="box_info2">
-		<table border="1" style="border-color:#DBC000 ">
+		<table class="table" border="1" style="border-color:#DBC000 ">
 			<tr>
 				<th>사이즈</th>
 				<th>총 보관함수</th>
-				<th>현재 사용중</th>
-				<th>사용가능</th>
-				<th rowspan="4">선택</th>
 			</tr>
 			<tr>
-				<th>S</th>
-				<th>10개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >S</th>
+				<th style="background-color: #fff;">10개</th>
 			</tr>
 			<tr>
-				<th>M</th>
-				<th>7개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >M</th>
+				<th style="background-color: #fff;" >7개</th>
 			</tr>
 			<tr>
-				<th>L</th>
-				<th>3개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId">L</th>
+				<th style="background-color: #fff;">3개</th>
 			</tr>
 		</table>
 	</div>
@@ -180,31 +175,22 @@
 	<div class="box_info1">서울특별시 중구 을지로 42,2층 안내센터 옆</div>
 </div>
 	<div class="box_info2">
-		<table border="1" style="border-color:#DBC000 ">
+		<table class="table" border="1" style="border-color:#DBC000 ">
 			<tr>
 				<th>사이즈</th>
 				<th>총 보관함수</th>
-				<th>현재 사용중</th>
-				<th>사용가능</th>
-				<th rowspan="4">선택</th>
 			</tr>
 			<tr>
-				<th>S</th>
-				<th>10개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >S</th>
+				<th style="background-color: #fff;">10개</th>
 			</tr>
 			<tr>
-				<th>M</th>
-				<th>7개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >M</th>
+				<th style="background-color: #fff;" >7개</th>
 			</tr>
 			<tr>
-				<th>L</th>
-				<th>3개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId">L</th>
+				<th style="background-color: #fff;">3개</th>
 			</tr>
 		</table>
 	</div>
@@ -223,31 +209,22 @@
 	<div class="box_info1">서울특별시 중구 세종대로 2, 4번 출구</div>
 </div>
 	<div class="box_info2">
-		<table border="1" style="border-color:#DBC000 ">
+		<table class="table" border="1" style="border-color:#DBC000 ">
 			<tr>
 				<th>사이즈</th>
 				<th>총 보관함수</th>
-				<th>현재 사용중</th>
-				<th>사용가능</th>
-				<th rowspan="4">선택</th>
 			</tr>
 			<tr>
-				<th>S</th>
-				<th>10개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >S</th>
+				<th style="background-color: #fff;">10개</th>
 			</tr>
 			<tr>
-				<th>M</th>
-				<th>7개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >M</th>
+				<th style="background-color: #fff;" >7개</th>
 			</tr>
 			<tr>
-				<th>L</th>
-				<th>3개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId">L</th>
+				<th style="background-color: #fff;">3개</th>
 			</tr>
 		</table>
 	</div>
@@ -266,31 +243,22 @@
 	<div class="box_info1">서울 종로구 세종대로 172,1번 출구</div>
 </div>
 	<div class="box_info2">
-		<table border="1" style="border-color:#DBC000 ">
+		<table class="table" border="1" style="border-color:#DBC000 ">
 			<tr>
 				<th>사이즈</th>
 				<th>총 보관함수</th>
-				<th>현재 사용중</th>
-				<th>사용가능</th>
-				<th rowspan="4">선택</th>
 			</tr>
 			<tr>
-				<th>S</th>
-				<th>10개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >S</th>
+				<th style="background-color: #fff;">10개</th>
 			</tr>
 			<tr>
-				<th>M</th>
-				<th>7개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >M</th>
+				<th style="background-color: #fff;" >7개</th>
 			</tr>
 			<tr>
-				<th>L</th>
-				<th>3개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId">L</th>
+				<th style="background-color: #fff;">3개</th>
 			</tr>
 		</table>
 	</div>
@@ -309,31 +277,22 @@
 	<div class="box_info1">서울특별시 종로구 돈화문로 30,2-1번 출구</div>
 </div>
 	<div class="box_info2">
-		<table border="1" style="border-color:#DBC000 ">
+		<table class="table" border="1" style="border-color:#DBC000 ">
 			<tr>
 				<th>사이즈</th>
 				<th>총 보관함수</th>
-				<th>현재 사용중</th>
-				<th>사용가능</th>
-				<th rowspan="4">선택</th>
 			</tr>
 			<tr>
-				<th>S</th>
-				<th>10개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >S</th>
+				<th style="background-color: #fff;">10개</th>
 			</tr>
 			<tr>
-				<th>M</th>
-				<th>7개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId" >M</th>
+				<th style="background-color: #fff;" >7개</th>
 			</tr>
 			<tr>
-				<th>L</th>
-				<th>3개</th>
-				<th> </th>
-				<th> </th>
+				<th class="tableId">L</th>
+				<th style="background-color: #fff;">3개</th>
 			</tr>
 		</table>
 	</div>

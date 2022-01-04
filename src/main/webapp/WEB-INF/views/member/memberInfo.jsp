@@ -65,7 +65,7 @@
   </div>
 	<div class="search">
 		<form action="${contextPath }/member/memberInfo" method="get">
-			<input class="inputId" type="text" name="id" placeholder="Input Id">
+			<input class="inputId" type="text" name="id" value="${param.id }" placeholder="Input Id">
 			<input class="submitBtn" type="submit" value="아이디 검색">
 		</form>
 	</div>	

@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>내 정보수정</title>
 
-<link rel="stylesheet" href="../resources/css/modify.css">
+<link rel="stylesheet" href="../resources/css/modify.css?ver=1">
 
 <script src="<%=request.getContextPath()%>/resources/js/daumpost.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -95,7 +95,7 @@
 									</tr>
 									<tr>
 										<th>비밀번호</th>
-										<td><input type="password" name="pw" placeholder="현재 비번을 입력 해주세요"></td>
+										<td><input type="password" name="pw" placeholder="변경할 비밀번호 입력"></td>
 									</tr>
 									<c:set var="addr" value="${fn:split(info.addr,'/') }" />
 									<tr>

@@ -2,6 +2,8 @@ package com.care.root.member.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.care.root.common.MemberSessionName;
+import com.care.root.member.dto.BookingDTO;
 import com.care.root.member.dto.MemberDTO;
 import com.care.root.member.service.MemberService;
 
@@ -70,7 +73,8 @@ public class MemberController implements MemberSessionName {
 		//System.out.println("autoLogin : " + autoLogin);
 		
 		session.setAttribute(LOGIN, id);
-		System.out.println("session : " + LOGIN);
+		System.out.println("session : " + session.getAttribute(LOGIN));
+		System.out.println("카카오 session : " + session.getAttribute(KAKAOLOGIN));
 		
 		if(autoLogin != null) {
 			int limitTime = 60*60*24*90; //자동로그인에 체크했다면 90일간 쿠키를 만들어줌
@@ -188,7 +192,8 @@ public class MemberController implements MemberSessionName {
 		if(!email.equals("0")){
 			session.setAttribute(LOGIN, email);
 			session.setAttribute(KAKAOLOGIN, email);
-			System.out.println("세션명 : " +  session.getAttribute(KAKAOLOGIN));
+			//System.out.println("일반 세션명 : " + session.getAttribute(LOGIN));
+			//System.out.println("카카오 세션명 : " +  session.getAttribute(KAKAOLOGIN));
 			System.out.println("카카오 로그인성공");
 			return email;
 		}
@@ -212,6 +217,8 @@ public class MemberController implements MemberSessionName {
 	public String mypage(Model model, HttpSession session) {
 		//servlet-context.xml에 "/member/memberInfo" 와 동일한 인터셉터 설정되어있음
 		int result = ms.mypage(model, (String)session.getAttribute(KAKAOLOGIN), (String)session.getAttribute(LOGIN));
+		//ms.mypage_booking((String)session.getAttribute(LOGIN));
+		
 		model.addAttribute("loginWay", result);
 		return "member/mypage";
 	}
@@ -271,9 +278,84 @@ public class MemberController implements MemberSessionName {
 	}
 	
 	@GetMapping("bookingList")
-	public String bookingList(Model model) {
+	public String bookingList(Model model, @RequestParam(value="inputValue", required=false) String inputValue,
+			HttpSession session, @RequestParam(required = false, defaultValue = "1" ) int num,
+			@RequestParam(value="searchOption", required=false) String searchOption) {
 		
-			ms.bookingList(model);
+			if(inputValue != null) {
+				String inputValue1 = inputValue.toLowerCase();
+				//대문자 소문자 구분없이 검색가능
+				ms.searchLockerId(model, inputValue1, num, searchOption);
+			}else {
+				ms.bookingList(model,num);
+			}
 			return "member/bookingList";
 	}
+	
+	@PostMapping(value="ajax_bookingCancel", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public void ajaxBookingCancel(@RequestBody Map cancelId) {
+		String lockerId = cancelId.get("cancelId").toString();
+		//System.out.println(lockerId);
+		
+		int result = ms.bookingCancel(lockerId);
+		
+		if(result == 0) {
+			System.out.println("DB업데이트실패");
+		}
+	}
+	
+	// locker 체크인 여부 검색
+	@PostMapping(value="ajax_lockerCheck", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public ArrayList<BookingDTO> ajaxLockerCheck(@RequestBody Map checkId) {
+		String lockerId = checkId.get("checkId").toString();
+		System.out.println("[Con]락커 아이디 : "+lockerId);
+		
+		ArrayList<BookingDTO> result = ms.lockerCheck(lockerId);
+		
+		for(int i=0; i<result.size(); i++) { 
+			
+			System.out.println("[Con] 예약된 락커: " + result.get(i).getLockerId());
+			
+		}
+		return result;
+	}
+	
+	//예약하기
+	@PostMapping(value="ajax_booking_Confirm", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public int ajaxBookingConfirm(@RequestBody Map bookConfirm, HttpSession session) {
+		String confirm = bookConfirm.get("bookConfirm").toString();
+		System.out.println("[Con]예약할 락커 : "+confirm);
+		
+		//세션 가져오기
+		String email = (String)session.getAttribute(KAKAOLOGIN);
+		String id = (String)session.getAttribute(LOGIN);
+		System.out.println("카카오세션 : " + email);
+		System.out.println("일반세션 : " + id);
+		
+		// 날짜 가져오기
+		SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date dateObj = calendar.getTime();
+        String s_date = dtf.format(dateObj);
+        System.out.println(s_date);
+        
+        //체크인 설정
+        String checkin = "checked";
+        
+        int result = 0;
+        
+        if(email == null) {
+        	result = ms.BookingConfirm1(confirm,checkin,s_date,id);
+        }else {
+        	result = ms.BookingConfirm2(confirm,checkin,s_date,email);
+        }
+		
+		//int result = ms.BookingConfirm(confirm, checkin, s_date, email, id);
+
+		return result;
+	}
+	
 }

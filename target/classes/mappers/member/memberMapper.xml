@@ -22,6 +22,7 @@
 		<result property="checkIn" column="checkin"/>
 		<result property="sDate" column="s_date"/>
 		<result property="id" column="id"/>
+		<result property="email" column="email"/>
 	</resultMap>
 
 	<select id="userCheck" resultMap="member">
@@ -79,7 +80,8 @@
 	</update>
 	
 	<select id="bookingList" resultMap="booking">
-		select * from booking
+		select B.* from(select rownum rn, A.* from
+		(select * from booking order by lockerid asc)A)B where rn between #{s} and #{e}
 	</select>
 	
 	<select id="searchId" resultMap="member">
@@ -98,5 +100,63 @@
 	
 	<select id="selectSearchEmailCount" resultType="Integer">
 		select count(*) from kakaomember where email like '%'||#{userEmail}||'%'
+	</select>
+	
+	<select id="selectBookingCount" resultType="Integer">
+		select count(*) from booking
+	</select>
+	
+	<select id="selectSearchBookingCount" resultType="Integer">
+		select count(*) from booking where lockerid like '%'||#{lockerId}||'%'
+	</select>
+	
+	<select id="searchLockerId" resultMap="booking">
+		select B.* from(select rownum rn, A.* from
+		(select * from booking where ${searchOption} like '%'||#{inputValue}||'%' order by lockerid asc)A)B where rn between #{s} and #{e}
+	</select>
+	
+	<update id="bookingCancel">
+		update booking set checkin='', s_date='', id='', email='' where lockerid=#{lockerId}
+	</update>
+	
+	<select id="searchBookingId" resultMap="booking">
+		select * from booking where id=#{id}
+	</select>
+	
+	<select id="searchBookingEmail" resultMap="booking">
+		select * from booking where email=#{email}
+	</select>
+	
+	<select id="lockerCheck" resultMap="booking">
+		select * from booking where lockerid like #{lockerId}||'%' and checkin='checked'
+	</select>
+	
+	<!-- 
+	<update id="BookingConfirm">
+		update booking 
+		<set>
+			<if test="checkin != null">checkin=#{checkin},</if>
+			<if test="s_date != null">s_date=#{s_date},</if>
+			<if test="email != null">email=#{email},</if>
+			<if test="id != null">id=#{id},</if>
+		</set>
+		where lockerid=#{confirm}
+	</update>
+	 -->
+	 
+	 <update id="BookingConfirm1">
+	 	update booking set checkin=#{checkin}, s_date=#{s_date}, id=#{id} where lockerid=#{confirm}
+	 </update>
+	 
+	 <update id="BookingConfirm2">
+	 	update booking set checkin=#{checkin}, s_date=#{s_date}, email=#{email} where lockerid=#{confirm}
+	 </update>
+	 
+	 <select id="selectSearchBookingCount2" resultType="Integer">
+		select count(*) from booking where id like '%'||#{inputValue}||'%'
+	</select>
+	
+	<select id="selectSearchBookingCount3" resultType="Integer">
+		select count(*) from booking where email like '%'||#{inputValue}||'%'
 	</select>
 </mapper>

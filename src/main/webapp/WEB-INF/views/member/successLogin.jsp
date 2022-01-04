@@ -7,20 +7,70 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="../resources/css/booking.css">
-<link rel="stylesheet" href="../resources/css/location.css">
+<!-- <link rel="stylesheet" href="../resources/css/location.css"> -->
 
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="../resources/js/jquery-syaku.rolling.js"></script>
+    <script type="text/javascript">
+        jQuery(function() {
+  
+            jQuery("#srolling").srolling({
+                data : $("#aaa > div"),  // 노출될 아이템
+                auto : false,                    //자동 롤링 true , false
+                width : 300,                 // 노출될 아이템 크기
+                height : 50,                    // 노출될 아이템 크기
+                item_count : 1,         // 이동 될 아이템 수
+                cache_count : 1,            // 임시로 불러올 아이템 수
+                delay : 1000,               // 이동 아이템 딜레이
+                delay_frame : 500,      // 아이템 흐르는 속도
+                move : 'top',               // 이동 방향 left , right , top , down
+                prev : '#p_click',          // < 이동 버튼
+                next : '#n_click'           // > 이동 버튼
+            });
+        });
+        </script>
+
 <script type="text/javascript">
-	/* function init() {
+	function fresh() {
 		document.getElementById('station-btn').click();
-	} */
+	}
 	
-	function station(){
-		var selectedStation = $("select[name=station]").val()
-		document.getElementById('stationResult').innerText = selectedStation;
-		document.getElementById('stationResult2').innerText = selectedStation;
-		document.getElementById('station-btn').click();
-		document.getElementById('date-btn').click();
+	function station(statusItem){
+		/* var selectedStation = $("select[name=station]").val() */
+		selectedStation = statusItem.id;
+		var stName = "";
+		console.log(statusItem)
+		console.log(selectedStation)
+		
+		/* 선택된 역 색지정 */
+		var selSt = document.querySelectorAll(".station");
+		console.log(selSt)
+		
+		for(i=0; i<selSt.length; i++){
+			selSt[i].classList.remove("sel-station");
+		}
+		
+		statusItem.classList.add("sel-station");
+		
+		/* 역이름 정하기 */
+		if(selectedStation=="ch"){
+			stName = "시청역";
+ 		}else if(selectedStation=="ul"){
+			stName = "을지로입구역";
+ 		}else if(selectedStation=="ss"){
+			stName = "서울역";
+		}else if(selectedStation=="gh"){
+			stName = "광화문역";
+ 		}else{
+ 			stName = "종로3가역";
+ 		}
+		console.log(stName)
+ 
+		document.getElementById('stationResult').innerText = stName;
+		document.getElementById('stationResult2').innerText = stName;
+		/*document.getElementById('station-btn').click();
+		document.getElementById('date-btn').click(); */
 	}
 	
 	function date(){
@@ -37,30 +87,140 @@
 		document.getElementById('time-btn').click();
 	}
 	
-	function time(){
-		var selectedTime = $("select[name=hour]").val()
-		document.getElementById('timeResult').innerText = selectedTime;
-		document.getElementById('timeResult2').innerText = selectedTime;
-		document.getElementById('time-btn').click();
-		document.getElementById('size-btn').click();
+	function time(statusItem){
+		var selectedTime = statusItem.id;
+		var selectedPart = "시간을 선택해 주세요";
+		lockerTime = "";
+		console.log(selectedTime)
+		console.log(selectedPart)
+		
+		var timePart = document.querySelectorAll(".time-part");
+		console.log(timePart)
+		
+		for(i=0; i<timePart.length; i++){
+			timePart[i].classList.remove("sel-time");
+		}
+		
+		statusItem.classList.add("sel-time");
+		
+		if(selectedTime == "part1"){
+			selectedPart = "08시-12시(4h)";
+			lockerTime = "a";
+			console.log(selectedPart)
+		}else if(selectedTime == "part2"){
+			selectedPart = "12시-16시(4h)";
+			lockerTime = "b";
+			console.log(selectedPart)
+		}else{
+			selectedPart = "16시-20시(4h)";
+			lockerTime = "c";
+			console.log(selectedPart)
+		}
+		
+		/* db접근용 라커id 생성 */
+		console.log("선택한 역 코드 : " + selectedStation)
+		lockerST = selectedStation;
+		console.log("전역변수에 대입 : " + lockerST)
+		console.log("선택한 시간파트 : " + lockerTime)
+		
+		lockerId = lockerST + "-" + lockerTime;
+		console.log("DB 비교용 락커이름 : " + lockerId)
+		var form = {checkId : lockerId}
+		bookedLokers = ''
+		
+		/* 컨트롤러로 락커id 보내기 */
+		$.ajax({
+			url : "ajax_lockerCheck",
+			async:false,	// ajax의 결과값(result)을 전역변수로 넣기 위해 추가함
+			type : "POST",
+			data : JSON.stringify(form),
+			dataType: "json",		/* 리스트 형태로 돌아오기 때문에 json으로 설정 */
+			contentType: 'application/json',
+			success:function(result){
+				bookedLokers = result
+				console.log(JSON.stringify(result))		/* json 전체 출력 */
+				console.log(result)		/* 일반 arr형태로 출력 */
+				$.each(result , function(idx, val) {
+					console.log("체크인락커 불러오기") /* 인덱스와 함께 출력됨 */
+					console.log(idx + " " + val.lockerId)
+					})
+			}
+		})
+		
+		/* 받아온 예약된 락커에 'booked' 클래스추가 */
+		console.log("전역변수로 저장 후 출력" + bookedLokers)
+		var allLockers = document.querySelectorAll(".loc");
+		for(i=0; i<bookedLokers.length; i++){
+			bkLockerSize=bookedLokers[i].lockerId.substr(5,2) //문자열 자르기
+			console.log("스플릿 : " + bkLockerSize)
+			for(j=0; j<allLockers.length; j++){
+				/* console.log(bkLockerSize+":"+allLockers[j].id) */
+				if(bkLockerSize==allLockers[j].id){  // 모든락커 id와 자른 문자열 비교
+					console.log("일치함 : "+bkLockerSize+":"+allLockers[j].id)
+					document.getElementById(bkLockerSize).classList.add("booked") //예약된 락커에 클래스 추가
+					document.getElementById(bkLockerSize).style.backgroundColor= "#bebebe";
+					$('#'+bkLockerSize).attr('onclick','').unbind('click'); 
+				}
+			}
+		}
+		
+		
+		//
+		
+		document.getElementById('sel-part').innerText = selectedPart;
+		document.getElementById('timeResult2').innerText = selectedPart;
+		
+		/* if(selectedTime == "part1"){
+			document.getElementById('timeResult').innerText = selectedTime;
+		}
+		document.getElementById('timeResult2').innerText = selectedTime; */
 	}
 	
 	function size(){
-		var selectedSize = $("#sel-locker").text();
-		/* document.getElementById('sizeResult').innerText = checkedSize; */
-		document.getElementById('sizeResult2').innerText = selectedSize;
-		document.getElementById('size-btn').click();
-		document.getElementById('conf-btn').click();
-	}	
+	      var selectedSize = $("#sel-locker").text();
+	      /* document.getElementById('sizeResult').innerText = checkedSize; */
+	      document.getElementById('sizeResult2').innerText = selectedSize;
+	      if (selectedSize==""){
+	         alert("락커를 먼저 선택해 주세요!");
+	      }else{
+	         document.getElementById('size-btn').click();
+	         document.getElementById('conf-btn').click();
+	      }
+	   }   
+</script>
+
+<script>
+
+function station_sel(){
+	   var prevVal = $("#stationResult").text();
+	   if (prevVal==""){
+	      alert("장소를 먼저 선택해 주세요!");
+	   }else{
+	      document.getElementById('station-btn').click();
+	      document.getElementById('date-btn').click();
+	   }
+	}
+
+	function time_sel(){
+	   var prevVal = $("#sel-part").text();
+	   if (prevVal==""){
+	      alert("시간을 먼저 선택해 주세요!");
+	   }else{
+	      document.getElementById('time-btn').click();
+	      document.getElementById('size-btn').click();
+	   }
+	}
+
 </script>
 
 <!-- 사물함 선택 -->
 <script>
 function test(statusItem) {
+	
 	console.log(statusItem);
-	var locker = $(statusItem).text();
+	locker = $(statusItem).text();
 	console.log(locker);
-	var colors=["#a2d8ff","#ffc800"];
+	var colors=["#a2d8ff","#ffc800","#bebebe"];
 	
 	/* 락커 색 바꾸기(시작) */
 	var lockers = document.querySelectorAll(".loc");
@@ -75,14 +235,45 @@ function test(statusItem) {
 	statusItem.classList.add("color1");
 	
 	document.querySelector('.color1').style.backgroundColor=colors[1];
+	var colorGray = document.getElementsByClassName("booked");
+	for(i=0; i<colorGray.length; i++){
+		console.log("회색 : "+colorGray[i].id)
+		colorGray[i].style.backgroundColor=colors[2];
+	}
 	/* 락커 색 바꾸기(끝) */
 	
 	document.getElementById('sel-locker').innerText = locker;
 }
 </script>
 
+<script>
+function confirm() {
+	   console.log(lockerId)
+	   var bookInfo = lockerId + "-" + locker
+	   bookInfo = bookInfo.toLowerCase();
+	   var form = {bookConfirm : bookInfo}
+	   
+	   $.ajax({
+	         url : "ajax_booking_Confirm",
+	         type : "POST",
+	         data : JSON.stringify(form),
+	         dataType: "text",      
+	         contentType: 'application/json',
+	         success:function(result){
+	            if(result==1){
+	               alert("예약이 완료되었습니다")
+	               let url = "/root/"
+	               location.replace(url)
+	            }else{
+	               alert("예약이 실패하였습니다")
+	            }
+	         }
+	      })
+	}
+</script>
+
 </head>
-<body onload="init()">
+<body onload="fresh()">
 	<div class="nav_bar">
 		<c:import url="../default/header.jsp"></c:import>
 	</div>
@@ -92,10 +283,55 @@ function test(statusItem) {
 
 		<div id="stationPopup">
  
-			<div class="p-content">
-				<div class="container">
-    				<h1>LOCATION</h1>
-    				<div class="album">
+			<div class="p-content container">
+			
+			
+				<div class="c-title"><h3>장소선택</h3></div>
+    			
+    			<div>
+    			
+    			<a id="p_click" style="margin-bottom: 20px;">
+					<img src="../resources/images/up.png">
+				</a>
+    			
+    			
+    			<div class="stations"id="srolling" style="margin-left:100px; margin-bottom:20px;position: relative;overflow:hidden;width:750px;height:50px;">
+    					<div id="aaa" style="display:none;">
+    			
+    			
+    				<div class="station ch" id="ch" onclick="station(this);">
+    					<h1>시청역</h1>
+    				</div>
+    				<div class="station ul" id="ul" onclick="station(this);">
+    					<h1>을지로입구역</h1>
+    				</div>
+    				<div class="station ss" id="ss" onclick="station(this);">
+    					<h1>서울역</h1>
+    				</div>
+    				<div class="station gh" id="gh" onclick="station(this);">
+    					<h1>광화문역</h1>
+    				</div>
+    				<div class="station gr" id="gr" onclick="station(this);">
+    					<h1>종로3가역</h1>
+    				</div>
+    				
+    				</div>
+    				
+    				
+    				</div>
+					<a id="n_click"><img src="../resources/images/down.png"></a>
+    				</div>
+    				
+    				
+    				<!-- <select name="station">
+							<option value="undefined">=== 선택 ===</option>
+							<option value="시청역 1호선점">시청역 1호선점</option>
+							<option value="을지로입구역 2호선점">을지로입구역 2호선점</option>
+							<option value="서울역 1호선점">서울역 1호선점</option>
+							<option value="광화문역 5호선점">광화문역 5호선점</option>
+							<option value="종로3가 3호선점">종로3가 3호선점</option>	
+					</select> -->
+    				<!-- <div class="album">
       					<div class="images">
         					<img src="../resources/images/image1.jpeg">
         					<img src="../resources/images/image2.jpeg">
@@ -104,27 +340,31 @@ function test(statusItem) {
         					<img src="../resources/images/image5.jpeg">
       					</div>
     				</div>
-    				<button class="prev">PREV</button>
-    				<button class="next">NEXT</button>  
-  				</div>
-  				<script src="../resources/js/script.js"></script>
-				[ 장소 선택 ]<br>
-			<select name="station">
-				<option value="undefined">=== 선택 ===</option>
-				<option value="시청역 1호선점">시청역 1호선점</option>
-				<option value="을지로입구역 2호선점">을지로입구역 2호선점</option>
-				<option value="서울역 1호선점">서울역 1호선점</option>
-				<option value="광화문역 5호선점">광화문역 5호선점</option>
-				<option value="종로3가 3호선점">종로3가 3호선점</option>	
-			</select>
-			
-			<button onclick="station();">선택하기</button><br>
-			선택된 값 : <span id="stationResult"></span>
+    				<div class="remote">
+    					<button class="prev">PREV</button>
+    					<button class="next">NEXT</button>  
+  							<script src="../resources/js/script.js"></script>
+						<select name="station">
+							<option value="undefined">=== 선택 ===</option>
+							<option value="시청역 1호선점">시청역 1호선점</option>
+							<option value="을지로입구역 2호선점">을지로입구역 2호선점</option>
+							<option value="서울역 1호선점">서울역 1호선점</option>
+							<option value="광화문역 5호선점">광화문역 5호선점</option>
+							<option value="종로3가 3호선점">종로3가 3호선점</option>	
+						</select>
+					</div> -->
+				
+				<div class="selected">
+					<h3>선택 장소 : </h3><h3 id="stationResult"></h3>
+				</div>
+				<button onclick="station_sel();">Next</button><br>
 			</div>
+			
 
 			<a class="close" onclick="stationPopupToggle()">
 				<img src="../resources/css/cancel.png">
 			</a>
+		
 		</div>
 		
 		<div id="datePopup">
@@ -151,7 +391,9 @@ function test(statusItem) {
 					</div>
 				</div>
 				<div class="c-select">
-					<button onclick="date();">선택하기</button>
+				</div>
+				<div>
+					<button onclick="date();">Next</button>
 				</div>
 			</div>
 			
@@ -162,18 +404,33 @@ function test(statusItem) {
 		
 		<div id="timePopup">
 			<div class="p-content">
-			[ 시간 선택 ]<br>
-			<select name="hour">
-				<option value="undefined">=== 선택 ===</option>
-				<option value="1시">1시</option>
-				<option value="3시">3시</option>
-				<option value="5시">5시</option>
-				<option value="7시">7시</option>
-				
-			</select>
-			
-			<button onclick="time();">선택하기</button><br>
-			선택된 값 : <span id="timeResult"></span>
+				<div class="c-title"><h3>시간선택</h3></div>
+				<div class="time">
+					<div class="time-part" id="part1" onclick="time(this);">
+						<h3>AM</h3>
+						<h1>08:00</h1>
+						<h1>~</h1>
+						<h1>12:00</h1>
+					</div>
+					<div class="time-part" id="part2" onclick="time(this);">
+						<h3>PM</h3>
+						<h1>12:00</h1>
+						<h1>~</h1>
+						<h1>16:00</h1>
+					</div>
+					<div class="time-part" id="part3" onclick="time(this);">
+						<h3>PM</h3>
+						<h1>16:00</h1>
+						<h1>~</h1>
+						<h1>20:00</h1>
+					</div>
+				</div>
+				<div class="selected">
+					<h3>선택된 시간 : </h3><h3 id="sel-part"></h3>
+				</div>
+				<div>
+					<button onclick="time_sel();">Next</button>
+				</div>
 			</div>
 			
 			<a class="close" onclick="timePopupToggle()">
@@ -189,35 +446,35 @@ function test(statusItem) {
 					<div>
 						<table width="600">
 							<tr height="50">
-								<td class="loc ls01" id="S01" onclick="test(this)">S01</td> 
-								<td class="loc ls02" id="S02" onclick="test(this)">S02</td> 
-								<td class="loc ls03" id="S03" onclick="test(this)">S03</td> 
-								<td class="loc ls04" id="S04" onclick="test(this)">S04</td> 
-								<td class="loc ls05" id="S05" onclick="test(this)">S05</td>
+								<td class="loc ls01" id="s1" onclick="test(this)">S1</td> 
+								<td class="loc ls02" id="s2" onclick="test(this)">S2</td> 
+								<td class="loc ls03" id="s3" onclick="test(this)">S3</td>
+								<td class="loc ls04" id="s4" onclick="test(this)">S4</td>
+								<td class="loc ls05" id="s5" onclick="test(this)">S5</td>
 							</tr>
 							<tr height="50">
-								<td class="loc ls06" id="S06" onclick="test(this)">S06</td> 
-								<td class="loc ls07" id="S07" onclick="test(this)">S07</td> 
-								<td class="loc ls08" id="S08" onclick="test(this)">S08</td> 
-								<td class="loc ls09" id="S09" onclick="test(this)">S09</td> 
-								<td class="loc ls10" id="S10" onclick="test(this)">S10</td>
+								<td class="loc ls06" id="s6" onclick="test(this)">S6</td> 
+								<td class="loc ls07" id="s7" onclick="test(this)">S7</td> 
+								<td class="loc ls08" id="s8" onclick="test(this)">S8</td> 
+								<td class="loc ls09" id="s9" onclick="test(this)">S9</td> 
+								<td class="loc ls10" id="s10" onclick="test(this)">S10</td>
 							</tr>
 							<tr height="70">
-								<td class="loc lm01" id="M01" onclick="test(this)">M01</td> 
+								<td class="loc lm01" id="m1" onclick="test(this)">M1</td> 
 								<td class="Kiosk" id="Kiosk" rowspan="2">Kiosk</td> 
-								<td class="loc lm02" id="M02" onclick="test(this)">M02</td> 
-								<td class="loc lm03" id="M03" onclick="test(this)">M03</td> 
-								<td class="loc lm04" id="M04" onclick="test(this)">M04</td>
+								<td class="loc lm02" id="m2" onclick="test(this)">M2</td> 
+								<td class="loc lm03" id="m3" onclick="test(this)">M3</td> 
+								<td class="loc lm04" id="m4" onclick="test(this)">M4</td>
 							</tr>
 							<tr height="70">
-								<td class="loc ll01" id="L01" rowspan="2" onclick="test(this)">L01</td> 
-								<td class="loc ll02" id="L02" rowspan="2" onclick="test(this)">L02</td> 
-								<td class="loc lm05" id="M05" onclick="test(this)">M05</td> 
-								<td class="loc ll03" id="L03" rowspan="2" onclick="test(this)">L03</td>
+								<td class="loc ll01" id="l1" rowspan="2" onclick="test(this)">L1</td> 
+								<td class="loc ll02" id="l2" rowspan="2" onclick="test(this)">L2</td> 
+								<td class="loc lm05" id="m5" onclick="test(this)">M5</td> 
+								<td class="loc ll03" id="l3" rowspan="2" onclick="test(this)">L3</td>
 							</tr>
 							<tr height="70">
-								<td class="loc lm06" id="M06" onclick="test(this)">M06</td> 
-								<td class="loc lm07" id="M07" onclick="test(this)">M07</td>
+								<td class="loc lm06" id="m6" onclick="test(this)">M6</td> 
+								<td class="loc lm07" id="m7" onclick="test(this)">M7</td>
 							</tr>
 						</table>
 					</div>
@@ -228,8 +485,17 @@ function test(statusItem) {
 					<input type="radio" name="size" value="L">&nbsp;&nbsp;L
 					<button onclick="size();">선택하기</button>
 					선택된 값 : <span id="sizeResult"></span> -->
-					<h3>선택된 사물함 : </h3><h3 id="sel-locker"></h3>
-					<button onclick="size();">선택하기</button>
+					<div class="selected-1">
+						<h4 class="blue">■</h4><h5>예약가능</h5>
+						<h4 class="gray">■</h4><h5>예약불가</h5>
+						<h4 class="orange">■</h4><h5>선택</h5>
+					</div>
+					<div class="selected-2">
+						<h3>선택된 사물함 : </h3><h3 id="sel-locker"></h3>
+					</div>
+				</div>
+				<div>
+					<button onclick="size();">Next</button>
 				</div>
 			</div>
 			
@@ -241,14 +507,59 @@ function test(statusItem) {
 		
 		<div id="confPopup">
 			<div class="p-content">
-				장소 : <span id="stationResult2"></span><br>
-				날짜 : <span id="dateResult2"></span><br>
-				시간 : <span id="timeResult2"></span><br>
-				사이즈 : <span id="sizeResult2"></span><br>
-				<input class="p-button" type="button" value="보관함 조회하기">
-				<div class="dbSearchResult">
-					DB검색결과 : 
+				<div class="c-title"><h3>예약하기</h3></div>
+				<div class="book-result">
+					<div class="book-left">
+						<img class="conf-img" src="../resources/images/booked.png">
+						<h1>예약정보를</h1>
+						<h1>확인해주세요</h1>
+					</div>
+					<div class="book-right">
+						<!-- <div class="book-title">
+  							<h1>예약 정보</h1>
+  						</div> -->
+  						<div class="book-info">
+  							<div class="books book-station">
+								<h3>장소</h3>
+								<div>
+									<img class="conf-img" src="../resources/images/place.png">
+									<h4 id="stationResult2"></h4>
+								</div>
+								<!-- <span id="stationResult2"></span> -->
+							</div>
+							<div class="books book-date">
+								<h3>날짜</h3>
+								<div>
+									<img class="conf-img" src="../resources/images/twelve.png">
+									<h4 id="dateResult2"></h4>
+								</div>
+								<!-- <span id="dateResult2"></span> -->
+							</div>
+							<div class="books book-time">
+								<h3>시간</h3>
+								<div>
+									<img class="conf-img" src="../resources/images/stopwatch.png">
+									<h4 id="timeResult2"></h4>
+								</div>
+								<!-- <span id="timeResult2"></span> -->
+							</div>
+							<div class="books book-size">
+								<h3>사이즈</h3>
+								<div>
+									<img class="conf-img" src="../resources/images/ruler.png">
+									<h4 id="sizeResult2"></h4>
+								</div>
+								<!-- <span id="sizeResult2"></span> -->
+							</div>
+						</div>
+					</div>
 				</div>
+				<div>
+					<button onclick="confirm();">예약하기</button>
+				</div>
+<!-- 				<div class="dbSearchResult">
+					DB검색결과 : 
+				</div> -->
 			</div>
 			
 			<a class="close" onclick="confPopupToggle()">

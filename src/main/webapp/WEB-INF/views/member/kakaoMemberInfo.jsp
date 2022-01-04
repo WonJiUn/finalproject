@@ -64,7 +64,7 @@
   
   <div class="search">
 		<form action="${contextPath }/member/kakaoMemberInfo" method="get">
-			<input class="inputId" type="text" name="email" placeholder="Input Email">
+			<input class="inputId" type="text" name="email" value="${param.email}" placeholder="Input Email">
 			<input class="submitBtn" type="submit" value="이메일 검색">
 		</form>
   </div>
